@@ -31,6 +31,20 @@ export default function Home() {
     getTasks();
   };
 
+
+  const handleDragStart = (e:any, taskId:any) => {
+    e.dataTransfer.setData("taskId", taskId);
+  };
+
+  const handleDragOver = (e:any) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e:any, status:any) => {
+    const taskId = e.dataTransfer.getData("taskId");
+    moveTask(taskId, status);
+  };
+  
   return (
     <div className="container">
       <h1 className="text-center mt-5 mb-3">Simple Task Management</h1>
@@ -48,10 +62,21 @@ export default function Home() {
       <div className="row">
         <div className="col">
           <h2 className="text-center">To Do</h2>
+          <div
+            className="drop-zone"
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, "todo")}
+            id="dropTarget"
+          >
           {tasks
             .filter((task:any) => task.status === "todo")
             .map((task:any) => (
-              <div key={task.id} className="card my-3">
+              <div
+              key={task.id}
+              className="card my-3"
+              draggable="true"
+              onDragStart={(e) => handleDragStart(e, task.id)}
+            >
                 <div className="card-body">
                   <h5 className="card-title">{task.title}</h5>
                   <p className="card-text">{task.description}</p>
@@ -77,12 +102,24 @@ export default function Home() {
               </div>
             ))}
         </div>
+        </div>
         <div className="col">
           <h2 className="text-center">In Progress</h2>
+          <div
+            className="drop-zone"
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, "in_progress")}
+            id="dropTarget"
+          >
           {tasks
             .filter((task:any) => task.status === "in_progress")
             .map((task:any) => (
-              <div key={task.id} className="card my-3">
+              <div
+              key={task.id}
+              className="card my-3"
+              draggable="true"
+              onDragStart={(e) => handleDragStart(e, task.id)}
+            >
                 <div className="card-body">
                   <h5 className="card-title">{task.title}</h5>
                   <p className="card-text">{task.description}</p>
@@ -108,12 +145,24 @@ export default function Home() {
               </div>
             ))}
         </div>
+        </div>
         <div className="col">
           <h2 className="text-center">Done</h2>
+          <div
+            className="drop-zone"
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, "done")}
+            id="dropTarget"
+          >
           {tasks
             .filter((task:any) => task.status === "done")
             .map((task:any) => (
-              <div key={task.id} className="card my-3">
+              <div
+              key={task.id}
+              className="card my-3"
+              draggable="true"
+              onDragStart={(e) => handleDragStart(e, task.id)}
+            >
                 <div className="card-body">
                   <h5 className="card-title">{task.title}</h5>
                   <p className="card-text">{task.description}</p>
@@ -133,8 +182,8 @@ export default function Home() {
               </div>
             ))}
         </div>
+        </div>
       </div>
-
     </div>
   );
 }
