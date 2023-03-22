@@ -1,4 +1,4 @@
-# republika-task
+# simple-task-management
 
 Simple Task Management
 
